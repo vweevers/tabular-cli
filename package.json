@@ -1,0 +1,58 @@
+{
+  "name": "tabular-cli",
+  "version": "1.0.0",
+  "description": "Detects, normalizes and converts tabular data (spreadsheets, dsv or json)",
+  "main": "index.js",
+  "bin": {
+    "tabular": "bin/tabular"
+  },
+  "scripts": {
+    "test": "tape test/*.js"
+  },
+  "files": [
+    "index.js",
+    "LICENSE",
+    "readme.md",
+    "bin"
+  ],
+  "dependencies": {
+    "format-data": "~2.1.1",
+    "meow": "~3.1.0",
+    "object.pick": "~1.1.1",
+    "open": "0.0.5",
+    "resolve": "~1.1.6",
+    "stream-combiner2": "~1.0.2",
+    "tabular-stream": "~2.0.0",
+    "xtend": "~4.0.0"
+  },
+  "devDependencies": {
+    "concat-stream": "~1.4.8",
+    "cross-spawn": "~0.4.0",
+    "deep-equal": "~1.0.0",
+    "snake-case": "~1.1.1",
+    "tape": "~4.0.0",
+    "through2": "~0.6.5"
+  },
+  "keywords": [
+    "tabular",
+    "spreadsheet",
+    "dsv",
+    "csv",
+    "tsv",
+    "xls",
+    "xlsx",
+    "ods",
+    "json",
+    "ndjson",
+    "gnumeric",
+    "sylk"
+  ],
+  "author": "Vincent Weevers (http://vincentweevers.nl)",
+  "license": "MIT",
+  "repository": "git://github.com/vweevers/tabular-cli",
+  "bugs": "https://github.com/vweevers/tabular-cli/issues",
+  "homepage": "https://github.com/vweevers/tabular-cli",
+  "engines": {
+    "node": ">= 0.10.0"
+  }
+}

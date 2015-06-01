@@ -1,0 +1,73 @@
+#!/usr/bin/env node
+
+var meow    = require('meow')
+  , resolve = require('resolve')
+  , api     = require('../index')
+  , pkg     = require('../package.json')
+
+var minimist = {
+  alias: {
+    o: 'output',
+    k: 'keys',
+    d: 'default-value',
+    default: 'default-value'
+  },
+  string: [
+    // If I don't list the aliases here,
+    // minimist will coerce them.
+    'o', 'output', 'k', 'keys',
+    'default-value', 'd', 'default',
+    'style', 'prefix', 'separator', 'suffix', 'event' ],
+  boolean: ['phpexcel', 'headers'],
+  default: {
+    output: 'json',
+    phpexcel: null,
+    'default-value': 0,
+    'headers': true
+  }
+}
+
+var cli   = meow({ help: false, pkg: pkg }, minimist)
+  , flags = cli.flags
+
+if (flags.help) {
+  var homepage = pkg.homepage
+  require('open')(homepage.url || homepage)
+  process.exit()
+}
+
+flags.sendHeaders = flags.headers
+
+// Catch empty string
+if (!flags.output) flags.output = minimist.default.output
+
+// Coerce default-value option
+var def = flags.defaultValue
+
+if (def === 'undefined')  flags.defaultValue = undefined
+else if (def === 'null')  flags.defaultValue = null
+else if (def === 'true')  flags.defaultValue = true
+else if (def === 'false') flags.defaultValue = false
+else if (def) {
+  var num = def.replace(',', '.')
+  if (!isNaN(num)) flags.defaultValue = +num
+}
+
+// Transform keys with a module
+if (flags.keys) {
+  var name = flags.keys
+  
+  try {
+    // A local module
+    var path = resolve.sync(name, { basedir: process.cwd() })
+    flags.keys = require(path)
+  } catch(e) {
+    // Something installed alongside tabular-stream
+    // or at a weird historic location
+    flags.keys = require(name)
+  }
+}
+
+process.stdin
+  .pipe( api(flags) )
+  .pipe( process.stdout )
